@@ -24,7 +24,7 @@
             var context = canvas.getContext("2d");
             var centerX = canvas.width / 2;
             var centerY = canvas.height / 2;
-            var radius = 70;
+            var radius = canvas.width / 2 - 2;
 
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
