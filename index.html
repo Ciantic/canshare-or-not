@@ -9,6 +9,7 @@
             canvas {
                 width: 100%;
                 display: block;
+                max-width: 400px;
             }
         </style>
     </head>
@@ -43,10 +44,12 @@
                 };
                 try {
                     if (!navigator.canShare(data)) {
-                        throw new Error("Not sharing today!", data);
+                        alert("Unable to share?");
+                        console.error("Unable to share", data);
                     }
                     await navigator.share(data);
                 } catch (err) {
+                    alert("Unable to share? " + err.name + " " + err.message);
                     console.error(err.name, err.message);
                 }
             });
