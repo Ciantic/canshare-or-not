@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Can Share tests</title>
+        <style>
+            canvas {
+                width: 100%;
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>File without text or other stuff</h2>
+        <canvas width="2000" height="2000"></canvas>
+        <button class="share-with-can" type="button">Test share</button>
+        <button class="canshare" type="button">Can share?</button>
+        <button class="share-without-can" type="button">Share without can</button>
+        <script type="module">
+            const canvas = document.querySelector("canvas");
+            const ctx = canvas.getContext("2d");
+            ctx.beginPath();
+            ctx.arc(100, 75, 50, 0, 2 * Math.PI);
+            ctx.arc(15, 75, 50, 0, 2 * Math.PI);
+            ctx.arc(150, 75, 50, 0, 2 * Math.PI);
+            ctx.arc(32, 75, 50, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            async function getFile() {
+                return await (await fetch(canvas.toDataURL("image/jpeg", 0.92))).blob();
+            }
+
+            document.querySelector(".share-with-can").addEventListener("click", async () => {
+                const blob = getFile();
+                const data = {
+                    files: [
+                        new File([blob], "image.jpg", {
+                            type: blob.type,
+                        }),
+                    ],
+                };
+                try {
+                    if (!navigator.canShare(data)) {
+                        throw new Error("Not sharing today!", data);
+                    }
+                    await navigator.share(data);
+                } catch (err) {
+                    console.error(err.name, err.message);
+                }
+            });
+        </script>
+    </body>
+</html>
