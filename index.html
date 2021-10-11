@@ -33,20 +33,38 @@
                 return await (await fetch(canvas.toDataURL("image/jpeg", 0.92))).blob();
             }
 
-            document.querySelector(".share-with-can").addEventListener("click", async () => {
-                const blob = getFile();
-                const data = {
+            async function sharingData() {
+                const blob = await getFile();
+                return {
                     files: [
                         new File([blob], "image.jpg", {
                             type: blob.type,
                         }),
                     ],
                 };
+            }
+
+            document.querySelector(".share-with-can").addEventListener("click", async () => {
+                const data = await sharingData();
                 try {
                     if (!navigator.canShare(data)) {
                         alert("Unable to share?");
                         console.error("Unable to share", data);
                     }
+                    await navigator.share(data);
+                } catch (err) {
+                    alert("Unable to share? " + err.name + " " + err.message);
+                    console.error(err.name, err.message);
+                }
+            });
+
+            document.querySelector(".canshare").addEventListener("click", async () => {
+                const data = await sharingData();
+                alert(!navigator.canShare(data));
+            });
+            document.querySelector(".share-without-can").addEventListener("click", async () => {
+                const data = await sharingData();
+                try {
                     await navigator.share(data);
                 } catch (err) {
                     alert("Unable to share? " + err.name + " " + err.message);
