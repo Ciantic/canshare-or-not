@@ -21,13 +21,18 @@
         <button class="share-without-can" type="button">Share without can</button>
         <script type="module">
             const canvas = document.querySelector("canvas");
-            const ctx = canvas.getContext("2d");
-            ctx.beginPath();
-            ctx.arc(100, 75, 50, 0, 2 * Math.PI);
-            ctx.arc(15, 75, 50, 0, 2 * Math.PI);
-            ctx.arc(150, 75, 50, 0, 2 * Math.PI);
-            ctx.arc(32, 75, 50, 0, 2 * Math.PI);
-            ctx.stroke();
+            var context = canvas.getContext("2d");
+            var centerX = canvas.width / 2;
+            var centerY = canvas.height / 2;
+            var radius = 70;
+
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fillStyle = "red";
+            context.fill();
+            context.lineWidth = 5;
+            context.strokeStyle = "#003300";
+            context.stroke();
 
             async function getFile() {
                 return await (await fetch(canvas.toDataURL("image/jpeg", 0.92))).blob();
