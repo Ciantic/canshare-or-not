@@ -28,7 +28,7 @@
 
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-            context.fillStyle = "red";
+            context.fillStyle = "blue";
             context.fill();
             context.lineWidth = 5;
             context.strokeStyle = "#003300";
@@ -65,7 +65,7 @@
 
             document.querySelector(".canshare").addEventListener("click", async () => {
                 const data = await sharingData();
-                alert(!navigator.canShare(data));
+                alert(navigator.canShare(data) ? "OK" : "Can't share");
             });
             document.querySelector(".share-without-can").addEventListener("click", async () => {
                 const data = await sharingData();
